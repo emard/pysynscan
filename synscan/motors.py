@@ -155,7 +155,7 @@ class motors(comm):
         Some of this parameters are needed for all calculations 
         so they have to be available to the rest of the code
 
-        Parameters are stored in a dict with te following keys:
+        Parameters are stored in a dict with the following keys:
 
             * countsPerRevolution
             * TimerInterruptFreq
@@ -320,7 +320,7 @@ class motors(comm):
         #Position values are offseting by 0x800000
         response=self._send_cmd('H',axis,targetCounts+0x800000) # SetGotoTargetIncrement
         #Set Brake Point Increment
-        response=self._send_cmd('M',axis,0x000DAC)  # SetBreakPointIncrement
+        response=self._send_cmd('M',axis,0x000DAC)  # SetBrakePointIncrement
         return response
 
     def axis_wait2stop(self,axis):    
