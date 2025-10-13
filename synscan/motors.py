@@ -305,6 +305,11 @@ class motors(comm):
         response=self._send_cmd('S',axis,targetCounts+0x800000) # SetGotoTarget 
         return response
 
+    def axis_set_long_goto_step_period(self,axis,stepPeriod):
+        logging.info(f'AXIS{axis}: Setting long goto step period to {stepPeriod}')
+        response=self._send_cmd('T',axis,stepPeriod) # long goto step period
+        return response
+
     def axis_set_goto_targetIncrementCounts(self,axis,targetCounts):
         #NOT IN USE. HAVE TO BE TESTED!!
         '''GoTo Target increment in StepsCounts. Motors has to be stopped'''
