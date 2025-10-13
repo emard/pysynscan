@@ -8,6 +8,7 @@
 #      G  Set Motion Mode
 #      I  Set Step Period (T1 preset value)
 #      S  Set Goto Target 
+#      T  Set Long Goto Step Period
 #      H  SetGotoTargetIncrement
 #      M  SetBreakPointIncrement
 #      E  Set Position / SetAxisPosition
@@ -37,6 +38,7 @@
 #
 # Tested successfully on:
 # - SkyWatcher AZ-GTI 
+# - SkyWatcher Virtuoso GTi firmware 3.40.AF
 # - open-synscan
 # - Star Adventurer Mini (AXIS1 only), but goto does not stop.
 #
