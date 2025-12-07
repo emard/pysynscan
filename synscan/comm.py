@@ -32,7 +32,7 @@ class commUDP:
         self.lock= threading.Lock()
 
     def cmd(self,cmd,timeout_in_seconds=2):
-        '''Low level send command function '''
+        ''' Low level send command function '''
         with self.lock:
             self._sock.sendto(cmd,(self.udp_ip,self.udp_port))
             ready = select.select([self._sock], [], [], timeout_in_seconds)
@@ -60,7 +60,7 @@ class commSerial:
         self.commOK=False
 
     def cmd(self,cmd,timeout_in_seconds=2):
-        '''Low level send command function '''
+        ''' Low level send command function '''
         with self.lock:
             self.serial.write(cmd)
             response = self.serial.readline()
