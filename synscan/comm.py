@@ -3,19 +3,20 @@
 # pysynscan
 # Copyright (c) July 2020 Nacho Mas
 
-
 import socket
 import logging
 import os
 import select
-import threading
 
-
-
-UDP_IP = os.getenv("SYNSCAN_UDP_IP","192.168.4.1")
-UDP_PORT = int(os.getenv("SYNSCAN_UDP_PORT",11880))
-
-LOGGING_LEVEL=os.getenv("SYNSCAN_LOGGING_LEVEL",logging.INFO)
+try:
+  from os import getenv
+  UDP_IP = getenv("SYNSCAN_UDP_IP","192.168.4.1")
+  UDP_PORT = int(getenv("SYNSCAN_UDP_PORT",11880))
+  LOGGING_LEVEL=getenv("SYNSCAN_LOGGING_LEVEL",logging.INFO)
+except:
+  UDP_IP = None
+  UDP_PORT = 11880
+  LOGGING_LEVEL=0
 
 class commUDP:
     '''
@@ -29,7 +30,11 @@ class commUDP:
         self.udp_ip=udp_ip
         self.udp_port=udp_port
         self.commOK=False
-        self.lock= threading.Lock()
+        try:
+          import threading
+          self.lock= threading.Lock()
+        except:
+          self.lock=None
 
     def cmd(self,cmd,timeout_in_seconds=2):
         ''' Low level send command function '''
@@ -56,7 +61,11 @@ class commSerial:
         import serial
         ''' Init the serial port '''
         self.serial = serial.Serial(serial_dev, 9600, timeout=.02)
-        self.lock = threading.Lock()
+        try:
+          import threading
+          self.lock= threading.Lock()
+        except:
+          self.lock=None
         self.commOK=False
 
     def cmd(self,cmd,timeout_in_seconds=2):
@@ -93,7 +102,14 @@ class comm:
         if serial_dev:
             self.comm = commSerial(serial_dev)
         else:
-            self.comm = commUDP(udp_ip,udp_port)
+            if udp_ip:
+                self.comm = commUDP(udp_ip,udp_port)
+            else: # "syn" is local python interface with syn.cmd()
+                # esp32blesynscan/micropython/
+                # rename synscan.py -> syn.py
+                # mpremote cp synscan.py :/syn.py
+                import syn
+                self.comm = syn
 
     def _send_raw_cmd(self,cmd,timeout_in_seconds=2):
         return self.comm.cmd(cmd, timeout_in_seconds)

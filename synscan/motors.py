@@ -47,14 +47,19 @@
 # https://inter-static.skywatcher.com/downloads/skywatcher_motor_controller_command_set.pdf
 
 import os
-import logging
 from synscan.comm import comm
 import time
+import logging
 
-UDP_IP = os.getenv("SYNSCAN_UDP_IP","192.168.4.1")
-UDP_PORT = int(os.getenv("SYNSCAN_UDP_PORT",11880))
-
-LOGGING_LEVEL=os.getenv("SYNSCAN_LOGGING_LEVEL",logging.INFO)
+try:
+  from os import getenv
+  UDP_IP = getenv("SYNSCAN_UDP_IP","192.168.4.1")
+  UDP_PORT = int(getenv("SYNSCAN_UDP_PORT",11880))
+  LOGGING_LEVEL=getenv("SYNSCAN_LOGGING_LEVEL",logging.INFO)
+except:
+  UDP_IP = None # use python interface syn.cmd()
+  UDP_PORT = 11880
+  LOGGING_LEVEL=0
 
 class motors(comm):
     '''
