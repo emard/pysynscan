@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+import synscan
+
+'''Goto example'''
+def run():
+  smc=synscan.motors()
+  #Slow down long goto
+  smc.axis_set_long_goto_step_period(1, 3000); # AZ
+  smc.axis_set_long_goto_step_period(2, 3000); # ALT
+  #Move forward and wait to finish
+  smc.goto(-1,-1,synchronous=True)
+  print(smc.axis_get_pos(1),smc.axis_get_pos(2))
+  #Return to original position and exit without wait
+  smc.goto(0,0,synchronous=False)
+  print(smc.axis_get_pos(1),smc.axis_get_pos(2))
+
+run()

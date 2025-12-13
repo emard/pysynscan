@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+import synscan
+
+'''Goto example'''
+def run():
+  smc=synscan.motors()
+  #Slow down long goto
+  smc.axis_set_long_goto_step_period(1, 3000); # AZ
+  smc.axis_set_long_goto_step_period(2, 3000); # ALT
+  #If counts per revolution are correct, after both axis turn 180
+  #the telescope should point to same target as 0,0
+  #smc.goto(180,180,synchronous=True)
+  #move to 2° lower left before final point
+  #for 180,180 AZ should be 2° less, ALT should be 2° more
+  smc.goto(177,178,synchronous=True)
+  #If counts per revolution are not correct
+  #experiment with this until telescope points to 0,0
+  smc.goto(179+17/60,175+46/60,synchronous=False)
+
+run()
